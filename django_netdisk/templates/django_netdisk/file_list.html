@@ -1,0 +1,40 @@
+{% load bootstrap4 %}
+<html>
+    <head>
+        <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+      {% bootstrap_css %}
+      {% bootstrap_javascript jquery='full' %}
+    </head>
+    <body>
+        <h1>My files</h1>
+        <p><a href="{% url 'netdisk:file_create' %}">create new file</a></p>
+        <table>
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                    name
+                </th>
+                <td>
+                    createtime
+                </td>
+                <td>
+                    action
+                </td>
+            </tr>
+            {% for file in file_list %}
+            <tr>
+                <td>{{file.id}}</td>
+                <td><a href="{{file.file.url}}">{{file.file.name}}</a></td>
+                <td>{{file.createtime}}</td>
+                <td>
+                    <form method="POST" action="{% url 'netdisk:delete' file.id %}">
+                        {% csrf_token %}
+                        <button type="submit">delete</button>
+                    </form></td>
+            </tr>
+            {% endfor %}
+        </table>
+    </body>
+</html>
