@@ -1,9 +1,10 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import View, ListView
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic.edit import DeleteView
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 from .  import models, forms
 
 
@@ -24,11 +25,22 @@ class FileListView(LoginRequiredMixin, ListView):
     queryset = models.File.objects.all()
 
     def get_queryset(self):
-        return models.File.objects.filter(user=self.request.user)
+        return models.File.objects.filter(
+            Q(user=self.request.user) |
+            Q(groups__in=self.request.user.groups.all())
+        )
 
 
 class FileDeleteView(LoginRequiredMixin, DeleteView):
     queryset = models.File.objects.all()
+    success_url = reverse_lazy('netdisk:file_list')
+
+    def get_queryset(self):
+        return models.File.objects.filter(user=self.request.user)
+
+
+class FileEditView(LoginRequiredMixin, UpdateView):
+    fields = ["groups"]
     success_url = reverse_lazy('netdisk:file_list')
 
     def get_queryset(self):

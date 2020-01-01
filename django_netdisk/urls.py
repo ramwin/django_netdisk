@@ -7,4 +7,5 @@ urlpatterns = [
     path("file_create/", views.FileCreateView.as_view(), name="file_create"),
     path("file_list/", views.FileListView.as_view(), name="file_list"),
     path("delete/<int:pk>/", views.FileDeleteView.as_view(), name="delete"),
+    path("edit/<int:pk>/", views.FileEditView.as_view(), name="edit"),
 ]
