@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django_netdisk.views import FileListView
 
 urlpatterns = [
+    path("", FileListView.as_view()),
     path(r"accounts/", include("allauth.urls")),
     path('auth/', include("django.contrib.auth.urls")),
     path('admin/', admin.site.urls),

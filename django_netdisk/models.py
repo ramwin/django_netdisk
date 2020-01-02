@@ -1,3 +1,4 @@
+import pathlib
 from django.db import models
 from django.contrib.auth import get_user_model
 from django.contrib.auth.models import Group
@@ -14,3 +15,6 @@ class File(models.Model):
 
     class Meta:
         verbose_name = verbose_name_plural = "用户上传的文件"
+
+    def display(self):
+        return pathlib.Path(self.file.path).name

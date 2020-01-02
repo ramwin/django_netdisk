@@ -26,9 +26,15 @@ class FileListView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return models.File.objects.filter(
-            Q(user=self.request.user) |
-            Q(groups__in=self.request.user.groups.all())
+            user=self.request.user
         )
+
+    def get_context_data(self):
+        context = super().get_context_data()
+        context["shared_files"] = models.File.objects.filter(
+            groups__in=self.request.user.groups.all()
+        ).exclude(user=self.request.user)
+        return context
 
 
 class FileDeleteView(LoginRequiredMixin, DeleteView):

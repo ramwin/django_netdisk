@@ -9,6 +9,7 @@
     <div class="container">
       <h1>My files</h1>
       <p><a href="{% url 'netdisk:file_create' %}">create new file</a></p>
+      <p><a href="/accounts/logout/">log out</a></p>
       <table>
         <tr>
           <th>
@@ -30,7 +31,7 @@
         {% for file in file_list %}
         <tr>
           <td>{{file.id}}</td>
-          <td><a href="{{file.file.url}}">{{file.file.name}}</a></td>
+          <td><a href="{{file.file.url}}">{{file.display}}</a></td>
           <td>{{file.createtime}}</td>
           <td>
           {% for group in file.groups.all %}
@@ -40,9 +41,45 @@
           <td>
             <form method="POST" action="{% url 'netdisk:delete' file.id %}">
               {% csrf_token %}
+              <a href="{{file.file.url}}">download</button>
               <a href="{% url 'netdisk:edit' file.id %}">edit</button>
               <button type="submit">delete</button>
             </form></td>
+        </tr>
+        {% endfor %}
+      </table>
+      <h1>File Shared by Other</h1>
+      <table>
+        <tr>
+          <th>
+            id
+          </th>
+          <th>
+            name
+          </th>
+          <td>
+            createtime
+          </td>
+          <td>
+            groups
+          </td>
+          <td>
+            action
+          </td>
+        </tr>
+        {% for file in shared_files %}
+        <tr>
+          <td>{{file.id}}</td>
+          <td><a href="{{file.file.url}}">{{file.display}}</a></td>
+          <td>{{file.createtime}}</td>
+          <td>
+          {% for group in file.groups.all %}
+            {% bootstrap_label group.name label_class="warning" %}
+          {% endfor %}
+          </td>
+          <td>
+            <a href="{{file.file.url}}">download</button>
+          </td>
         </tr>
         {% endfor %}
       </table>
