@@ -23,4 +23,5 @@ urlpatterns = [
     path('auth/', include("django.contrib.auth.urls")),
     path('admin/', admin.site.urls),
     path("netdisk/", include("django_netdisk.urls", namespace="netdisk")),
+    path("客户/", include("excelwork.urls", namespace="excelwork")),
 ]

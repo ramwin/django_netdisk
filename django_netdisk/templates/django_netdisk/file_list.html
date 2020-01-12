@@ -48,39 +48,29 @@
         </tr>
         {% endfor %}
       </table>
-      <h1>File Shared by Other</h1>
+      <h1>需要我处理的客户</h1>
       <table>
         <tr>
-          <th>
-            id
-          </th>
-          <th>
-            name
-          </th>
-          <td>
-            createtime
-          </td>
-          <td>
-            groups
-          </td>
-          <td>
-            action
-          </td>
+          <th>姓名</th>
+          <th>下单时间</th>
+          <th>联系方式</th>
+          <th>购货时间</th>
         </tr>
         {% for file in shared_files %}
-        <tr>
-          <td>{{file.id}}</td>
-          <td><a href="{{file.file.url}}">{{file.display}}</a></td>
-          <td>{{file.createtime}}</td>
-          <td>
-          {% for group in file.groups.all %}
-            {% bootstrap_label group.name label_class="warning" %}
+          {% for 客户 in file.客户_set.all %}
+          <tr>
+            <td>{{客户.姓名}}</td>
+            <td>{{客户.下单时间}}</td>
+            <td>{{客户.联系方式}}</td>
+            <td>{{客户.购货时间}}</td>
+            <td>
+              <form method="post" action="{% url 'excelwork:删除客户' 客户.id %}">
+                {% csrf_token %}
+                <button type="submit">删除</button>
+              </form>
+            </td>
+          </tr>
           {% endfor %}
-          </td>
-          <td>
-            <a href="{{file.file.url}}">download</button>
-          </td>
-        </tr>
         {% endfor %}
       </table>
     </div>
